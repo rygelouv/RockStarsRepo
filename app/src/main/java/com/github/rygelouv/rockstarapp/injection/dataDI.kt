@@ -32,12 +32,7 @@ val dataModule = module {
 
     factory { RockStarMapper() }
 
-    single<PreferenceManager> {
-        PreferenceManagerImpl(
-            androidContext(),
-            get()
-        )
-    }
+    single<PreferenceManager> { PreferenceManagerImpl(androidContext(), get()) }
 
     factory<RockStarRepository> { RockStarRepositoryImpl(get(), get(), get(), get()) }
 
@@ -45,11 +40,7 @@ val dataModule = module {
 
     single { RockStartApiService(get()) }
 
-    single<RockStarSerializer> {
-        RockStarSerializerImpl(
-            get()
-        )
-    }
+    single<RockStarSerializer> { RockStarSerializerImpl(get()) }
 }
 
 

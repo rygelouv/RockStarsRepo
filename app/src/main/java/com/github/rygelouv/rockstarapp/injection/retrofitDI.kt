@@ -30,9 +30,7 @@ limitations under the License.
 private const val BASE_URL = "BASE_URL"
 
 val retrofitDIModule = module {
-    single {
-        provideRetrofit(get(named(BASE_URL)), get(), get())
-    }
+    single { provideRetrofit(get(named(BASE_URL)), get(), get()) }
 
     single { provideMoshi() }
 

@@ -26,9 +26,5 @@ limitations under the License.
 @FlowPreview
 @ExperimentalCoroutinesApi
 val presentationModel = module {
-    viewModel {
-        RockStarViewModel(
-            get()
-        )
-    }
+    viewModel { RockStarViewModel(get()) }
 }
