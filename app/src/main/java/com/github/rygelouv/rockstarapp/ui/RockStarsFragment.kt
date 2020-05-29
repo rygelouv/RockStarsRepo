@@ -29,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @ExperimentalCoroutinesApi
 class RockStarsFragment : Fragment(R.layout.fragment_home) {
 
-    private val viewModel by sharedViewModel<RockStarViewModel>()
+    private val viewModel by viewModel<RockStarViewModel>()
     private val rockStarListAdapter = RockStarListAdapter(::onRockStarFavoriteButtonClicked)
     private val saveRockStarChannel = Channel<RockStar>(Channel.UNLIMITED)
 
@@ -73,7 +73,7 @@ class RockStarsFragment : Fragment(R.layout.fragment_home) {
 
 
     private fun render(state: ViewState) {
-        Log.d("ROCK_STAR_TAG", "State ===> $state")
+        Log.e("ROCK_STAR_TAG", "State ===> ${state::class.java}")
         when(state) {
             is ViewState.LoadRockStarSuccess -> {
                 progressBar.gone()

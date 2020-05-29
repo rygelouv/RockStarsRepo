@@ -32,7 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 @ExperimentalCoroutinesApi
 class FavoritesFragment : Fragment(R.layout.fragment_dashboard) {
 
-    private val viewModel by sharedViewModel<RockStarViewModel>()
+    private val viewModel by viewModel<RockStarViewModel>()
     private val rockStarListAdapter = RockStarListAdapter(::onRockStarFavoriteButtonClicked)
     private val removeRockStarChannel = Channel<RockStar>(Channel.UNLIMITED)
 
@@ -78,7 +78,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_dashboard) {
 
 
     private fun render(state: ViewState) {
-        Log.d("ROCK_STAR_TAG", "State ===> $state")
+        Log.e("ROCK_STAR_TAG_FAV", "State ===> ${state::class.java}")
         when(state) {
             is ViewState.LoadFavoriteRockStarsSuccess -> {
                 progressBar.gone()

@@ -53,7 +53,7 @@ class RockStarRepositoryImpl(
 
 
     override suspend fun getRockStars(): List<RockStar> {
-        Log.e("REPO_TAG", "*@@@@@@@@@@@@ getting list *@@@@@@@@@@@@")
+        Log.e("REPO_TAG", "@@@@@@@@@@@@ getting list *@@@@@@@@@@@@")
         return withContext(Dispatchers.Default) {
             if (cache.size == 0) {
                 val rockStarList = withContext(Dispatchers.IO) { apiService.getRockStars() }
