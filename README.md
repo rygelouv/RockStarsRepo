@@ -1,6 +1,8 @@
 # RockStars App
 
-![](/screeshots/Screenshot_1590756583.png)![](/screeshots/Screenshot_1590756598.png)![](/screeshots/Screenshot_1590756609.png)
+![](/screeshots/Screenshot_1590756583.png =100x20)
+![](/screeshots/Screenshot_1590756598.png =100x20)
+![](/screeshots/Screenshot_1590756609.png =100x20)
 
 The project follows a simplified form of MVI architecturarl patten
 
