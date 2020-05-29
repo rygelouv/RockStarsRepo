@@ -40,3 +40,9 @@ We store the Favorites in Android Shared Preference system and take advantage of
 
 - Moshi (first time using it)
 - Coil Image loader (first time using it)
+
+### TODO
+
+- Simplify some of the algorithms
+- Add some KtLint checking
+- Write Unit Tests
