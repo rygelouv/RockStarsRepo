@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.github.rygelouv.rockstarapp.ui.HomeFragment"
+        android:name="com.github.rygelouv.rockstarapp.ui.RockStarsFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.github.rygelouv.rockstarapp.ui.DashboardFragment"
+        android:name="com.github.rygelouv.rockstarapp.ui.FavoritesFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.github.rygelouv.rockstarapp.ui.NotificationsFragment"
+        android:name="com.github.rygelouv.rockstarapp.ui.ProfileFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

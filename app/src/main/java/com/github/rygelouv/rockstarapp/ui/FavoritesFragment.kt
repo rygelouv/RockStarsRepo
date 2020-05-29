@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -16,34 +17,41 @@ import com.github.rygelouv.rockstarapp.presentation.RockStar
 import com.github.rygelouv.rockstarapp.presentation.RockStarIntent
 import com.github.rygelouv.rockstarapp.presentation.RockStarViewModel
 import com.github.rygelouv.rockstarapp.presentation.ViewState
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import kotlinx.coroutines.flow.*
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class FavoritesFragment : Fragment(R.layout.fragment_dashboard) {
 
     private val viewModel by viewModel<RockStarViewModel>()
     private val rockStarListAdapter = RockStarListAdapter(::onRockStarFavoriteButtonClicked)
-    private val saveRockStarChannel = Channel<RockStar>(Channel.UNLIMITED)
+    private val removeRockStarChannel = Channel<RockStar>(Channel.UNLIMITED)
 
 
     private fun onRockStarFavoriteButtonClicked(rockStar: RockStar) {
-        saveRockStarChannel.offer(rockStar)
+        Log.e("HOME", "Clicked =====> ${rockStar.firstName}")
+        removeRockStarChannel.offer(rockStar)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        bindViewModel()
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureRecyclerView()
-        bindViewModel()
     }
-
 
     private fun configureRecyclerView() {
         recyclerView.apply {
@@ -62,11 +70,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun intents(): Flow<RockStarIntent> {
         return merge(
-            flowOf(RockStarIntent.InitialIntent),
-            saveRockStarChannel.consumeAsFlow().map { RockStarIntent.SaveRockStarIntent(it) },
-            search.textChanges().map {
-                RockStarIntent.SearchRockStarIntent(it.toString())
-            }
+            flowOf(RockStarIntent.LoadFavoritesIntent),
+            removeRockStarChannel.consumeAsFlow().map { RockStarIntent.RemoveRockStarIntent(it) }
         )
     }
 
@@ -74,15 +79,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun render(state: ViewState) {
         Log.d("ROCK_STAR_TAG", "State ===> $state")
         when(state) {
-            is ViewState.LoadRockStarSuccess -> {
+            is ViewState.LoadFavoriteRockStarsSuccess -> {
                 progressBar.gone()
                 recyclerView.visible()
-                rockStarListAdapter.submitList(state.rockStars)
+                state.rockStars?.let { rockStarListAdapter.submitList(it) }
+                    ?: Toast.makeText(context, "No favorites found", Toast.LENGTH_SHORT).show()
             }
-            ViewState.LoadRockStarInProgress -> {
+            ViewState.LoadFavoriteRockStarsInProgress -> {
                 recyclerView.gone()
                 progressBar.visible()
             }
         }
     }
+
 }
