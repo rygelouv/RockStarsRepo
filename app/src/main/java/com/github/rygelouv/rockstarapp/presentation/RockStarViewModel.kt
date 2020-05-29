@@ -6,6 +6,7 @@ import com.github.rygelouv.rockstarapp.data.RockStarRepository
 import com.github.rygelouv.rockstarapp.data.RockStarRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -63,18 +64,19 @@ class RockStarViewModel(private val repo: RockStarRepository): ViewModel() {
 
     private fun searchRockStar(name: String) {
         viewModelScope.launch {
-            Log.e("ROCK", "LAUNCH")
+            Log.e("ROCK", "SEARCH")
             _viewStateD.postValue(ViewState.LoadRockStarInProgress)
             _viewStateD.postValue(ViewState.LoadRockStarSuccess(repo.search(name)))
         }
     }
 
-    private fun removeFavoriteRockStar(rockStar: RockStar) {
+
+    private suspend fun removeFavoriteRockStar(rockStar: RockStar) {
         viewModelScope.launch {
-            Log.e("ROCK", "LAUNCH")
+            Log.e("ROCK", "REMOVE")
             _viewStateD.postValue(ViewState.LoadRockStarInProgress)
-            _viewStateD.postValue(ViewState.LoadFavoriteRockStarsSuccess(repo.removeFavorite(rockStar)))
-            //loadRockStars()
+            val updatedFavoriteList = async { repo.removeFavorite(rockStar) }
+            _viewStateD.postValue(ViewState.LoadFavoriteRockStarsSuccess(updatedFavoriteList.await()))
             _intentChannel.offer(RockStarIntent.LoadFavoritesIntent)
         }
     }
@@ -82,7 +84,6 @@ class RockStarViewModel(private val repo: RockStarRepository): ViewModel() {
 
     private fun saveRockStar(rockStar: RockStar) {
         viewModelScope.launch {
-            Log.e("ROCK", "SAVING ---")
             val updateList = repo.saveRockStar(rockStar)
             _viewStateD.postValue(ViewState.LoadRockStarSuccess(updateList))
         }
@@ -91,7 +92,7 @@ class RockStarViewModel(private val repo: RockStarRepository): ViewModel() {
 
     private fun loadRockStars() {
         viewModelScope.launch {
-            Log.e("ROCK", "LAUNCH")
+            Log.e("ROCK", "LAUNCH Getting ROCK STARS")
             _viewStateD.postValue(ViewState.LoadRockStarInProgress)
             _viewStateD.postValue(ViewState.LoadRockStarSuccess(repo.getRockStars()))
         }

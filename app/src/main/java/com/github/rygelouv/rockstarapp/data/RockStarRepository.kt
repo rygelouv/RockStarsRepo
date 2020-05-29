@@ -53,6 +53,7 @@ class RockStarRepositoryImpl(
 
 
     override suspend fun getRockStars(): List<RockStar> {
+        Log.e("REPO_TAG", "*@@@@@@@@@@@@ getting list *@@@@@@@@@@@@")
         return withContext(Dispatchers.Default) {
             if (cache.size == 0) {
                 val rockStarList = withContext(Dispatchers.IO) { apiService.getRockStars() }
@@ -64,8 +65,10 @@ class RockStarRepositoryImpl(
 
 
     private fun buildRockStarList(): List<RockStar> {
+        Log.e("REPO_TAG", "************ building list ***************")
         return cache.getAll().map {
             if (preferenceManager.check(it)!!) {
+                Log.e("REPO_TAG", "*********** RockStar Found!!!! ************")
                 return@map it.copy(isFavorite = true)
             }
             it
@@ -80,7 +83,7 @@ class RockStarRepositoryImpl(
             val updatedRockStar = rockStar.copy(isFavorite = true) // Keeping things immutable
             cache[rockStar.buildHash()] = updatedRockStar
             withContext(Dispatchers.IO) { preferenceManager.saveRockStar(updatedRockStar) }
-            return cache.getAll()
+            return buildRockStarList()
         } catch (e: Exception) {
             throw UnableToSaveRockStarException()
         }

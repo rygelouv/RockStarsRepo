@@ -21,6 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -28,7 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @ExperimentalCoroutinesApi
 class RockStarsFragment : Fragment(R.layout.fragment_home) {
 
-    private val viewModel by viewModel<RockStarViewModel>()
+    private val viewModel by sharedViewModel<RockStarViewModel>()
     private val rockStarListAdapter = RockStarListAdapter(::onRockStarFavoriteButtonClicked)
     private val saveRockStarChannel = Channel<RockStar>(Channel.UNLIMITED)
 

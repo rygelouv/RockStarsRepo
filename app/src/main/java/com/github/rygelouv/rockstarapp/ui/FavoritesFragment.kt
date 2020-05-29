@@ -26,12 +26,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.flow.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 @FlowPreview
 @ExperimentalCoroutinesApi
 class FavoritesFragment : Fragment(R.layout.fragment_dashboard) {
 
-    private val viewModel by viewModel<RockStarViewModel>()
+    private val viewModel by sharedViewModel<RockStarViewModel>()
     private val rockStarListAdapter = RockStarListAdapter(::onRockStarFavoriteButtonClicked)
     private val removeRockStarChannel = Channel<RockStar>(Channel.UNLIMITED)
 
