@@ -1,6 +1,6 @@
 # RockStars App
 
-The project follows a simplified for of MVI architecturarl patten
+The project follows a simplified form of MVI architecturarl patten
 
 ### Intent
 
