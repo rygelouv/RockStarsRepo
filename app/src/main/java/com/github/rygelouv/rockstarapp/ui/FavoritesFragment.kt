@@ -38,7 +38,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_dashboard) {
 
 
     private fun onRockStarFavoriteButtonClicked(rockStar: RockStar) {
-        Log.e("HOME", "Clicked =====> ${rockStar.firstName}")
         removeRockStarChannel.offer(rockStar)
     }
 

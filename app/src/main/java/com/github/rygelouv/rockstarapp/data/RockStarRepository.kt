@@ -1,6 +1,5 @@
 package com.github.rygelouv.rockstarapp.data
 
-import android.util.Log
 import com.github.rygelouv.rockstarapp.data.api.RockStartApiService
 import com.github.rygelouv.rockstarapp.data.cache.MemoryCache
 import com.github.rygelouv.rockstarapp.data.pref.PreferenceManager
@@ -53,7 +52,6 @@ class RockStarRepositoryImpl(
 
 
     override suspend fun getRockStars(): List<RockStar> {
-        Log.e("REPO_TAG", "@@@@@@@@@@@@ getting list *@@@@@@@@@@@@")
         return withContext(Dispatchers.Default) {
             if (cache.size == 0) {
                 val rockStarList = withContext(Dispatchers.IO) { apiService.getRockStars() }
@@ -65,10 +63,8 @@ class RockStarRepositoryImpl(
 
 
     private fun buildRockStarList(): List<RockStar> {
-        Log.e("REPO_TAG", "************ building list ***************")
         return cache.getAll().map {
             if (preferenceManager.check(it)!!) {
-                Log.e("REPO_TAG", "*********** RockStar Found!!!! ************")
                 return@map it.copy(isFavorite = true)
             }
             it
@@ -78,7 +74,6 @@ class RockStarRepositoryImpl(
 
     @Throws(UnableToSaveRockStarException::class)
     override suspend fun saveRockStar(rockStar: RockStar): List<RockStar> {
-        Log.e("REPO_TAG", "rockStar saving")
         try {
             val updatedRockStar = rockStar.copy(isFavorite = true) // Keeping things immutable
             cache[rockStar.buildHash()] = updatedRockStar
