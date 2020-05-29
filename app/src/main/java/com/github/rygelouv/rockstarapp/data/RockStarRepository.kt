@@ -38,7 +38,7 @@ interface RockStarRepository {
 
 
 class RockStarRepositoryImpl(
-    private val service: RockStartApiService,
+    private val apiService: RockStartApiService,
     private val mapper: RockStarMapper,
     private val preferenceManager: PreferenceManager,
     private val cache: MemoryCache
@@ -55,7 +55,7 @@ class RockStarRepositoryImpl(
     override suspend fun getRockStars(): List<RockStar> {
         return withContext(Dispatchers.Default) {
             if (cache.size == 0) {
-                val rockStarList = withContext(Dispatchers.IO) { service.getRockStars() }
+                val rockStarList = withContext(Dispatchers.IO) { apiService.getRockStars() }
                 cache.putAll(rockStarList.team.map(mapper))
             }
             buildRockStarList()
